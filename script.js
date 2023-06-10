@@ -1,54 +1,41 @@
 //your JS code here. If required.
 
 
-let audio;
 
-
-
-let btn=document.getElementsByTagName('button');
-
-
- document.addEventListener('keypress',soundFunc);
+window.addEventListener('keydown',soundFunc);
 
 
 
 function soundFunc(event){
-console.log(event.key)
-let key=(event.key).toLowerCase();
-if(key==='a'){
-    let audio=new Audio('sounds/boom.wav');
-    audio.play();
+// console.log(event.keyCode)
+let code=event.keyCode;
+const audio=document.querySelector(`audio[data-key="${code}"]`);
+// console.log(audio);
+
+const keyButton=document.querySelector(`button[data-key="${code}"]`);
+// console.log(keyButton);
+if(keyButton) keyButton.classList.add('playing');
+if(!audio){
+    console.log('There is no audio for that key ',audio);
+    return;
 }
-if(key==='s'){
-    let audio=new Audio('sounds/clap.wav');
-    audio.play();
+//we want that every time we press key audio shuld be play from starting --
+audio.currentTime=0;
+audio.play();
+
 }
-if(key==='d'){
-    let audio=new Audio('sounds/hihat.wav');
-    audio.play();
-}
-if(key==='f'){
-    let audio=new Audio('sounds/kick.wav');
-    audio.play();
-}
-if(key==='g'){
-    let audio=new Audio('sounds/openhat.wav');
-    audio.play();
-}
-if(key==='h'){
-    let audio=new Audio('sounds/ride.wav');
-    audio.play();
-}
-if(key==='j'){
-    let audio=new Audio('sounds/snare.wav');
-    audio.play();
-}
-if(key==='k'){
-    let audio=new Audio('sounds/tink.wav');
-    audio.play();
-}
-if(key==='l'){
-    let audio=new Audio('sounds/tom.wav');
-    audio.play();
-}
+
+const keys=document.querySelectorAll('.key');
+
+console.log(keys);
+
+keys.forEach((key)=>{
+    key.addEventListener('transitionend',removeTransition);
+})
+
+function removeTransition(event){
+// console.log(event);
+if(event.propertyName!=='transform') return ;
+// console.log(this)
+this.classList.remove('playing');
 }
